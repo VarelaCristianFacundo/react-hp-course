@@ -1,22 +1,32 @@
-import logo from './logo.svg';
+import imageHogwarts from './img/Hogwartscrest.png';
 import './App.css';
+import { useState } from 'react';
+import Characters from './components/Characters';
 
 function App() {
+  const [characters, setCharacters] = useState (null);
+  const reqApi = async () =>{
+    
+    const api = await fetch ('http://hp-api.herokuapp.com/api/characters')
+    const characterApi = await api.json();
+    
+    setCharacters(characterApi)
+    
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1 className='title'>Hogwarts</h1>
+        {characters ? (
+          <Characters characters={characters} setCharacters={setCharacters}/>
+        ) : (
+          <>
+          <img src= {imageHogwarts} alt="Hogwarts" className="img-home"></img>
+          <button onClick={reqApi} className="btn-search">Buscar Personajes</button>
+          </>
+        )}
+        
       </header>
     </div>
   );
